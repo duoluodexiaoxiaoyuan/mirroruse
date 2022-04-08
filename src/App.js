@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { connect } from "mirrorx";
 
-function App() {
+function App(props) {
+  console.log(props.count);
   return (
     <div>
       <div>你好世界</div>
@@ -9,4 +10,8 @@ function App() {
   );
 }
 
-export default App;
+export default connect((state) => {
+  return {
+    count: state.app,
+  };
+})(App);
