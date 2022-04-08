@@ -8,16 +8,23 @@ import mirror, { actions, connect, render } from "mirrorx";
 
 mirror.model({
   name: "app",
-  initialState: 0,
+  initialState: { name: "张三", age: 14 },
   reducers: {
     increment(state) {
-      return state + 1;
+      return state;
     },
     decrement(state) {
-      return state - 1;
+      return state;
+    },
+    say(state, data) {
+      console.log(state, data);
+      return data;
     },
   },
   effects: {
+    eat() {
+      console.log("吃法");
+    },
     async incrementAsync() {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -31,16 +38,29 @@ mirror.model({
 
 // 使用 react-redux 的 connect 方法，连接 state 和组件
 const App = connect((state) => {
-  console.log(state);
   return { count: state.app };
 })((props) => (
   <div>
-    <h1>{props.count}</h1>
+    <h1>{props.count.name}</h1>
     {/* 调用 actions 上的方法来 dispatch action */}
     <button onClick={() => actions.app.decrement()}>-</button>
     <button onClick={() => actions.app.increment()}>+</button>
     {/* dispatch async action */}
     <button onClick={() => actions.app.incrementAsync()}>+ Async</button>
+    <button
+      onClick={() => {
+        console.log(actions.app.say({ height: 80 }));
+      }}
+    >
+      点击
+    </button>
+    <button
+      onClick={() => {
+        actions.app.eat();
+      }}
+    >
+      点击
+    </button>
   </div>
 ));
 
